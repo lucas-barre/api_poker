@@ -1,12 +1,25 @@
 import { Module } from '@nestjs/common';
+import { MongooseModule } from '@nestjs/mongoose';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { CatsController } from './cats/cats.controller';
-import { CatsService } from './cats/cats.service';
+import { PlayersController } from './players/players.controller';
+import { PlayersService } from './players/players.service';
+import { Player, PlayerSchema } from './players/players.schema';
+import { TablesController } from './tables/tables.controller';
+import { TablesService } from './tables/tables.service';
+import { Table, TableSchema } from './tables/tables.schema';
 
 @Module({
-  imports: [],
-  controllers: [AppController, CatsController],
-  providers: [AppService, CatsService],
+    imports: [
+        MongooseModule.forRoot('mongodb://marcel:123_soleil@localhost:27017/poker_db', {
+            authSource: 'poker_db',
+        }),
+        MongooseModule.forFeature([
+            { name: Player.name, schema: PlayerSchema },
+            { name: Table.name, schema: TableSchema },
+        ]),
+    ],
+    controllers: [AppController, PlayersController, TablesController],
+    providers: [AppService, PlayersService, TablesService],
 })
 export class AppModule {}
