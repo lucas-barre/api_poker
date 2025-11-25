@@ -8,6 +8,8 @@ import { Player, PlayerSchema } from './players/players.schema';
 import { TablesController } from './tables/tables.controller';
 import { TablesService } from './tables/tables.service';
 import { Table, TableSchema } from './tables/tables.schema';
+import { GamesController } from './games/games.controller';
+import { GamesService } from './games/games.service';
 
 @Module({
     imports: [
@@ -19,7 +21,7 @@ import { Table, TableSchema } from './tables/tables.schema';
             { name: Table.name, schema: TableSchema },
         ]),
     ],
-    controllers: [AppController, PlayersController, TablesController],
-    providers: [AppService, PlayersService, TablesService],
+    controllers: [AppController, PlayersController, TablesController, GamesController],
+    providers: [AppService, PlayersService, TablesService, GamesService],
 })
 export class AppModule {}
