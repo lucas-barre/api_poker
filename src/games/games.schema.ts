@@ -1,5 +1,24 @@
-export type Suit = '♠' | '♥' | '♦' | '♣';
-export type Rank = '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' | '10' | 'J' | 'Q' | 'K' | 'A';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+
+export type Suit = '♠'|'♥'|'♦'|'♣';
+export type Rank = '2'|'3'|'4'|'5'|'6'|'7'|'8'|'9'|'10'|'J'|'Q'|'K'|'A';
+export interface Card { suit: Suit; rank: Rank; }
+
+@Schema({ collection: 'games' })
+export class Game {
+    @Prop({ required: true }) tableName: string;
+    @Prop({ type: [String], required: true }) players: string[];
+    @Prop({ type: Object, required: true }) hands: Record<string, Card[]>;
+    @Prop({ type: [Object], default: [] }) community: Card[];
+    @Prop({ required: true }) pot: number;
+    @Prop({ type: Object, required: true }) blinds: { small: number; big: number; smallPos: number; bigPos: number };
+    @Prop({ type: Object, required: true }) bets: Record<string, number>;
+    @Prop({ default: 'preflop' }) phase: 'preflop'|'flop'|'turn'|'river'|'showdown';
+    @Prop({ required: true }) deck: Card[];
+    @Prop({ required: true }) currentPlayerIndex: number;
+    @Prop({ default: false }) isActive: boolean;
+}
+
 
 export interface Card {
     suit: Suit;

@@ -34,6 +34,21 @@ services:
       - mongodb_network
     depends_on:
       - mongodb
+  api:
+    build: ./api_poker
+    container_name: poker-api
+    restart: always
+    env_file:
+      - .env
+    environment:
+      MONGO_URI: mongodb://$MONGO_INITDB_ROOT_USERNAME:$MONGO_INITDB_ROOT_PASSWORD@mongodb:27017/poker_db?authSource=admin
+      JWT_SECRET: ${JWT_SECRET}
+    ports:
+      - "3000:3000"
+    depends_on:
+      - mongodb
+    networks:
+      - mongodb_network
 
 volumes:
   mongodb-data:

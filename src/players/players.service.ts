@@ -5,18 +5,23 @@ import { Player, PlayerDocument } from './players.schema';
 
 @Injectable()
 export class PlayersService {
-  constructor(@InjectModel(Player.name) private playerModel: Model<PlayerDocument>) {}
+    constructor(@InjectModel(Player.name) private playerModel: Model<PlayerDocument>) {}
 
-  async create(name: string): Promise<Player> {
-    const created = new this.playerModel({ name });
-    return created.save();
-  }
+    async create(data: { username: string; passwordHash: string; balance: number }): Promise<Player> {
+        const created = new this.playerModel(data);
+        return created.save();
+    }
 
-  async findAll(): Promise<Player[]> {
-    return this.playerModel.find().exec();
-  }
+    async findAll(): Promise<{ username: string; balance: number }[]> {
+        return this.playerModel.find().select('username balance -_id').lean().exec();
+    }
 
-  async findOne(id: string): Promise<Player | null> {
-    return this.playerModel.findById(id).exec();
-  }
+
+    async findOne(id: string): Promise<Player | null> {
+        return this.playerModel.findById(id).exec();
+    }
+
+    async findByUsername(username: string): Promise<Player | null> {
+        return this.playerModel.findOne({ username }).exec();
+    }
 }

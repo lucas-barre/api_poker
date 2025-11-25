@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { createDeck, shuffle, dealToPlayers, GAME_RULES } from './games.config';
+import { createDeck, shuffle, dealToPlayers, GAME_RULES } from './games.schema';
 
 @Injectable()
 export class GamesService {
